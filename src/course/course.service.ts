@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCourseDto, UpdateCourseDto } from './dto';
+import { ICourses } from 'src/seed/interfaces';
 
 @Injectable()
 export class CourseService {
@@ -21,5 +22,8 @@ export class CourseService {
 
   remove(id: number) {
     return `This action removes a #${id} course`;
+  }
+  fillCourseWhithSeedData(course: ICourses[]) {
+    const courses = course;
   }
 }

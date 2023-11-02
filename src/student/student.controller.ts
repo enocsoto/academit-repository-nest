@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto, UpdateStudentDto } from './dto';
-
+import { ParseMongoIdPipe } from '../common/pipes/parse-mongo-id/parse-mongo-id.pipe';
 
 @Controller('student')
 export class StudentController {
@@ -17,18 +26,21 @@ export class StudentController {
     return this.studentService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.studentService.findOne(id);
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.studentService.findOne(term);
   }
 
-  @Patch(':id')
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentService.update(id, updateStudentDto);
+  @Patch(':term')
+  update(
+    @Param('term') term: string,
+    @Body() updateStudentDto: UpdateStudentDto,
+  ) {
+    return this.studentService.update(term, updateStudentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
+  remove(@Param('id', ParseMongoIdPipe) id: string) {
     return this.studentService.remove(id);
   }
 }

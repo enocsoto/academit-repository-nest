@@ -1,40 +1,47 @@
 import {
   IsEmail,
   IsEnum,
+  IsMobilePhone,
   IsNumber,
+  IsPositive,
   IsString,
+  Max,
   MaxLength,
+  Min,
   MinLength,
 } from 'class-validator';
 
 export class CreateStudentDto {
-  
   @IsString()
   @MinLength(3)
-  readonly name: string;
+  readonly firstName: string;
 
   @IsString()
   @MinLength(3)
-  readonly surname: string;
+  readonly lastName: string;
 
   @IsString()
   @IsEmail()
   readonly email: string;
 
-  @IsString()
-  @MinLength(6)
-  readonly password: string;
+  @IsNumber()
+  @Min(16)
+  @Max(99)
+  @IsPositive()
+  readonly age: number;
 
-  @IsString()
-  @MinLength(3)
-  @MaxLength(10)
+  @IsMobilePhone()
   readonly phone: string;
 
   @IsString()
-  @IsEnum(['javascript', 'typescript', 'node.js'])
+  @IsEnum(['javascript', 'typescript', 'node.js'], {
+    message:
+      'Invalid programming language selected: javascript, typescript, node.js',
+  })
   readonly courses: string[];
 
-  @IsNumber()
+  @IsString()
+  @MinLength(7)
   @MaxLength(10)
-  readonly documentId: number;
+  readonly documentId: string;
 }

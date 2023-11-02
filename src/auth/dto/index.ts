@@ -1,3 +1,2 @@
-export { CreateAuthDto } from "./create-auth.dto";
-export { UpdateAuthDto } from "./update-auth.dto";
-
+export { CreateAuthDto } from './create-auth.dto';
+export { UpdateAuthDto } from './update-auth.dto';
