@@ -9,6 +9,7 @@ import { IStudent } from 'src/seed/interfaces';
 import { Model, isValidObjectId } from 'mongoose';
 import { Student } from './entities/student.entity';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class StudentService {
@@ -29,9 +30,13 @@ export class StudentService {
     }
   }
 
-  findAll() {
+  async findAll(paginationDto:PaginationDto){
+    const {limit =10, offset =0} = paginationDto;
     try {
-      const student = this.studentModel.find({ where: { status: true } });
+      const student = await this.studentModel.find({ where: { status: true } })
+      .limit(limit)
+      .skip(offset)
+      .select('-__v');
       return student;
     } catch (error) {
       throw new NotFoundException(`Dont find students on the database`);
