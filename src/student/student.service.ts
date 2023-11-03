@@ -40,7 +40,7 @@ export class StudentService {
   async findAll(paginationDto:PaginationDto){
     const {limit =this.defaulLimit, offset =this.defaulOffset} = paginationDto;
     try {
-      const student = await this.studentModel.find({ where: { status: true } })
+      const student = await this.studentModel.find({ status: true })
       .limit(limit)
       .skip(offset)
       .select('-__v');
@@ -58,7 +58,7 @@ export class StudentService {
 
       //Mongo ID
       if (!student && isValidObjectId(term)) {
-        student = await this.studentModel.findById(term);
+        student = await this.studentModel.findById(term, {where: {status:true}});
       }
       //DocumentID
       if (!student)

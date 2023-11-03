@@ -1,0 +1,31 @@
+version: '3'
+services:
+  backend-mongo:
+    image: mongo:5
+    container_name: db_mongo
+    environment:
+      MONGODB_DATABASE: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+    restart: always
+    volumes:
+      # Montamos un volumen para Mongo para no perder los datos de bd
+      - ./mongo:/data/db
+    ports:
+      - 27017:27017
+
+  backend-node:
+    depends_on:
+      - backend-mongo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: node-backend
+    container_name: backend-node
+    restart: always
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      DB_URI: ${DB_URI}
+      PORT: ${PORT}
+      DEFAULT_LIMIT: ${DEFAULT_LIMIT}
+      DEFAULT_OFFSET: ${DEFAULT_OFFSET}

@@ -2,6 +2,7 @@ version: '3'
 services:
   backend-mongo:
     image: mongo:5
+    container_name: db_mongo
     environment:
       MONGODB_DATABASE: ${DB_NAME}
       DB_PORT: ${DB_PORT}
