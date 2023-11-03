@@ -129,7 +129,9 @@ $ yarn run test:cov
 
 4. Start on dev: ```yarn start:dev```.
 
-5. Executed SEED `http://localhost:3000/api/seed`.
+5. Executed SEED COURSE `http://localhost:3000/api/seed/course`.
+
+6. Executed SEED STUDENT `http://localhost:3000/api/seed/student`.
 
 ## Stay in touch
 
