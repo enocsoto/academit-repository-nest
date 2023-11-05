@@ -5,10 +5,9 @@ services:
     container_name: db_mongo
     environment:
       MONGODB_DATABASE: ${DB_NAME}
-      DB_PORT: ${DB_PORT}
     restart: always
     volumes:
       # Montamos un volumen para Mongo para no perder los datos de bd
       - ./mongo:/data/db
     ports:
-      - ${DB_PORT}:27017
+      - 27017:27017

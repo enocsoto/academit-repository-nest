@@ -4,26 +4,19 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Model, isValidObjectId } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { Student } from './entities/student.entity';
 import { CreateStudentDto, UpdateStudentDto } from './dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { IStudent } from 'src/seed/interfaces';
+import { Model, isValidObjectId } from 'mongoose';
+import { Student } from './entities/student.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class StudentService {
-  private defaulLimit : number;
-  private defaulOffset : number;
   constructor(
     @InjectModel(Student.name)
     private readonly studentModel: Model<Student>,
-    private readonly configService: ConfigService,
-  ) {
-    this.defaulLimit = this.configService.get<number>('DEFAULT_LIMIT');
-    this.defaulOffset = this.configService.get<number>('DEFAULT_OFFSET');
-  }
+  ) {}
 
   async create(createStudentDto: CreateStudentDto) {
     try {
@@ -38,15 +31,16 @@ export class StudentService {
   }
 
   async findAll(paginationDto:PaginationDto){
-    const {limit =this.defaulLimit, offset =this.defaulOffset} = paginationDto;
+    const {limit =10, offset =0} = paginationDto;
     try {
       const student = await this.studentModel.find({ status: true })
       .limit(limit)
       .skip(offset)
       .select('-__v');
+      if(student.length === 0) throw new NotFoundException(`the database does not contain student`);
       return student;
     } catch (error) {
-      throw new NotFoundException(`Dont find students on the database`);
+      throw new InternalServerErrorException(`Dont find students on the database`);
     }
   }
 
@@ -68,8 +62,7 @@ export class StudentService {
       if (!student)
         student = await this.studentModel.findOne({ email: term.trim() });
 
-      if (!student) 
-        throw new NotFoundException(`Student ${term} not found`);
+      if (!student) throw new NotFoundException(`Student ${term} not found`);
 
       return student;
     } catch (error) {
