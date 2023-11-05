@@ -37,9 +37,10 @@ export class StudentService {
       .limit(limit)
       .skip(offset)
       .select('-__v');
+      if(student.length === 0) throw new NotFoundException(`the database does not contain student`);
       return student;
     } catch (error) {
-      throw new NotFoundException(`Dont find students on the database`);
+      throw new InternalServerErrorException(`Dont find students on the database`);
     }
   }
 
@@ -65,7 +66,7 @@ export class StudentService {
 
       return student;
     } catch (error) {
-      throw new InternalServerErrorException(
+      throw new NotFoundException(
         `Can't find student on the database, ${error.message}`,
       );
     }
