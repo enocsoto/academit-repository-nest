@@ -10,13 +10,20 @@ import { Model, isValidObjectId } from 'mongoose';
 import { Student } from './entities/student.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class StudentService {
+  private defaultLimit: number;
+  private defaultOffset: number;
   constructor(
     @InjectModel(Student.name)
     private readonly studentModel: Model<Student>,
-  ) {}
+    private readonly configService: ConfigService
+  ) {
+    this.defaultLimit = configService.get<number>('defaultLimit');
+    this.defaultOffset = configService.get<number>('defaultOffset');
+  }
 
   async create(createStudentDto: CreateStudentDto) {
     try {
@@ -31,7 +38,7 @@ export class StudentService {
   }
 
   async findAll(paginationDto:PaginationDto){
-    const {limit =10, offset =0} = paginationDto;
+    const {limit =this.defaultLimit, offset =this.defaultOffset} = paginationDto;
     try {
       const student = await this.studentModel.find({ status: true })
       .limit(limit)
@@ -52,7 +59,9 @@ export class StudentService {
 
       //Mongo ID
       if (!student && isValidObjectId(term)) {
-        student = await this.studentModel.findById(term, {where: {status:true}});
+        student = await this.studentModel.findById(term);
+        if(!student || student.status === false) 
+          throw new NotFoundException( `Student ${term} the status is desactivated` );
       }
       //DocumentID
       if (!student)

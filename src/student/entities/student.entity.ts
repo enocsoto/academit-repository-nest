@@ -60,6 +60,6 @@ export class Student extends Document {
     default: true,
     type: Boolean,
   })
-  status: string;
+  status: boolean;
 }
 export const StudentSchema = SchemaFactory.createForClass(Student);
