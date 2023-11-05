@@ -44,10 +44,13 @@ export class StudentService {
       .limit(limit)
       .skip(offset)
       .select('-__v');
-      if(student.length === 0) throw new NotFoundException(`the database does not contain student`);
+      
+      if(student.length === 0) 
+        throw new NotFoundException(`the database does not contain student`);
+      
       return student;
     } catch (error) {
-      throw new InternalServerErrorException(`Dont find students on the database`);
+      throw new InternalServerErrorException(`Dont find students on the database ${error.message}`);
     }
   }
 
@@ -71,7 +74,8 @@ export class StudentService {
       if (!student)
         student = await this.studentModel.findOne({ email: term.trim() });
 
-      if (!student) throw new NotFoundException(`Student ${term} not found`);
+      if (!student) 
+        throw new NotFoundException(`Student ${term} not found`);
 
       return student;
     } catch (error) {

@@ -3,9 +3,6 @@ import { CreateCourseDto } from './create-course.dto';
 import { IsEnum, IsString } from 'class-validator';
 
 export class UpdateCourseDto extends PartialType(CreateCourseDto) {
-  @IsString()
-  @IsEnum(['javascript', 'typescript', 'node.js'])
-  readonly title?: string;
 
   @IsString()
   readonly description?: string;
