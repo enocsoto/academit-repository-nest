@@ -22,13 +22,13 @@
 
 #### 3. Obtener un Estudiante por ID
 
-- **Ruta:** GET `/api/students/:id`
-- **Descripción:** Obtiene un estudiante por su ID.
+- **Ruta:** GET `/api/students/:term`
+- **Descripción:** Obtiene un estudiante por su ID, DocumentId o correo.
 
 #### 4. Actualizar un Estudiante
 
-- **Ruta:** PUT `/api/students/:id`
-- **Descripción:** Actualiza los datos de un estudiante existente.
+- **Ruta:** PUT `/api/students/:term`
+- **Descripción:** Actualiza los datos de un estudiante existente por ID, documentId o correo.
 
 #### 5. Eliminar un Estudiante
 
